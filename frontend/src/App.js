@@ -1,70 +1,44 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.css"; // I used bootstrap for styling
+import "./App.css";
+import axios from "axios"; // Axios is used for http requests to the python backend
+import { useEffect, useState } from "react";
+
+// Imported the features from the features folder
+// I have created a separate folder called features and added these features in it
+// This helps to make the code more modular and easy to understand and maintain
+// This also allows to reuse these features in other components if needed
+import Search from "../src/features/search";
+import TranscriptionTable from "../src/features/transcription_table";
+import UploadAudio from "../src/features/upload_audio";
 
 function App() {
+  // use state to store the transcriptions for the table
+  const [transcriptions, setTranscriptions] = useState([]);
+
+  // useEffect to fetch the transcriptions from backend when component mounts
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // function to fetch the transcriptions from the backend
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:5001/transcriptions");
+      setTranscriptions(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // return the main component
+  // I called the 3 features into this main component from the features folder
+  // Allow for easy layout and readability
   return (
     <div className="App container">
-      {/* Header */}
       <h1 className="text-center my-4">Audio Translator</h1>
-
-      {/* Upload Section */}
-      <div className="mb-4">
-        <h4>Upload Audio</h4>
-        <div className="d-flex align-items-center">
-          <input
-            type="file"
-            accept="audio/*"
-            className="form-control mr-2"
-          />
-          <button className="btn btn-primary">Upload</button>
-        </div>
-      </div>
-
-      {/* Search Bar Section */}
-      <div className="mb-4">
-        <h4>Search Transcriptions</h4>
-        <input
-          type="text"
-          placeholder="Search for files"
-          className="form-control"
-        />
-      </div>
-
-      {/* Audio List */}
-      <div className="mb-4">
-        <h4>Transcriptions</h4>
-        <table className="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">File Name</th>
-              <th scope="col">Transcription</th>
-              <th scope="col">Date Created</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Placeholder Data */}
-            <tr>
-              <th scope="row">1</th>
-              <td>Audio_1.wav</td>
-              <td>This is the transcription text for Audio 1.</td>
-              <td>2025-03-03</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Audio_2.mp3</td>
-              <td>This is the transcription text for Audio 2.</td>
-              <td>2025-03-02</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Audio_3.wav</td>
-              <td>This is the transcription text for Audio 3.</td>
-              <td>2025-03-01</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <UploadAudio fetchData={fetchData} />
+      <Search setTranscriptions={setTranscriptions} fetchData={fetchData} />
+      <TranscriptionTable transcriptions={transcriptions} />
     </div>
   );
 }
