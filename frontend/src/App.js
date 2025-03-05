@@ -14,21 +14,28 @@ import UploadAudio from "../src/features/upload_audio";
 function App() {
   // use state to store the transcriptions for the table
   const [transcriptions, setTranscriptions] = useState([]);
-
-  // useEffect to fetch the transcriptions from backend when component mounts
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const [loading, setLoading] = useState(true);
 
   // function to fetch the transcriptions from the backend
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:5001/transcriptions");
       setTranscriptions(response.data);
+      setLoading(false); // Set loading to false once data is available
     } catch (error) {
       console.log(error);
     }
   };
+
+  // useEffect to fetch the transcriptions from backend when component mounts
+  // Polling effect to continuously check for data every 3 seconds
+  useEffect(() => {
+    fetchData(); 
+
+    const interval = setInterval(fetchData, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // return the main component
   // I called the 3 features into this main component from the features folder
@@ -38,7 +45,14 @@ function App() {
       <h1 className="text-center my-4">Audio Translator</h1>
       <UploadAudio fetchData={fetchData} />
       <Search setTranscriptions={setTranscriptions} fetchData={fetchData} />
-      <TranscriptionTable transcriptions={transcriptions} fetchData={fetchData} />
+        {/* Show loading message until data is available */}
+        {loading ? (
+            <div>
+            <p>Loading transcriptions...</p>
+          </div>
+        ) : 
+        <TranscriptionTable transcriptions={transcriptions} />
+      }    
     </div>
   );
 }

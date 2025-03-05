@@ -5,26 +5,32 @@ const TranscriptionTable = ({ transcriptions }) => {
     return (
         <div className="mb-4">
         <h4>Transcriptions</h4>
-        <table className="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">File Name</th>
-                <th scope="col">Transcription</th>
-                <th scope="col">Date Created</th>
-            </tr>
-            </thead>
-            <tbody>
-            {transcriptions.map((item, index) => (
-                <tr key={index}>
-                <th scope="row">{index + 1}</th>
-                <td>{item.file_name}</td>
-                <td>{item.transcription}</td>
-                <td>{item.created}</td>
+        {/* If theres no transaction, display no transaction available */}
+        {transcriptions.length === 0 ? (
+            <p className="text-muted">No transcriptions available.</p>
+        ) : (
+            // Display table
+            <table className="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">File Name</th>
+                    <th scope="col">Transcription</th>
+                    <th scope="col">Date Created</th>
                 </tr>
-            ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {transcriptions.map((item, index) => (
+                    <tr key={index}>
+                    <th scope="row">{index + 1}</th>
+                    <td>{item.file_name}</td>
+                    <td>{item.transcription}</td>
+                    <td>{item.created}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+        )}
         </div>
     );
 };
