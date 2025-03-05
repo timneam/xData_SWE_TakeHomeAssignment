@@ -41,18 +41,20 @@ function App() {
   // I called the 3 features into this main component from the features folder
   // Allow for easy layout and readability
   return (
-    <div className="App container">
-      <h1 className="text-center my-4">Audio Translator</h1>
-      <UploadAudio fetchData={fetchData} />
-      <Search setTranscriptions={setTranscriptions} fetchData={fetchData} />
-        {/* Show loading message until data is available */}
-        {loading ? (
-            <div>
-            <p>Loading transcriptions...</p>
-          </div>
-        ) : 
-        <TranscriptionTable transcriptions={transcriptions} />
-      }    
+    <div className="container mx-auto m-3">
+      <div className="card shadow-lg p-4 rounded">
+        <h1 className="text-center my-2">Audio Translator</h1>
+        <UploadAudio fetchData={fetchData} />
+        <Search setTranscriptions={setTranscriptions} fetchData={fetchData} />
+          {/* Show loading message until data is available */}
+          {loading ? (
+              <div>
+              <p>Loading transcriptions...</p>
+            </div>
+          ) : 
+          <TranscriptionTable transcriptions={transcriptions} />
+        }    
+      </div>
     </div>
   );
 }
