@@ -1,0 +1,40 @@
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import UploadAudio from "../features/upload_audio";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+
+describe("Upload Audio Component", () => {
+    let mock;
+
+    beforeEach(() => {
+        mock = new MockAdapter(axios);
+    });
+
+    afterEach(() => {
+        mock.restore();
+    });
+
+    test("renders file input", () => {
+        render(<UploadAudio fetchData={jest.fn()} />);
+        expect(screen.getByText("Upload Audio")).toBeInTheDocument();
+    });
+
+    test("handles file upload", async () => {
+        const mockFetchData = jest.fn();
+        render(<UploadAudio fetchData={mockFetchData} />);
+
+        mock.onPost("http://127.0.0.1:5001/transcribe").reply(200, { success: true });
+
+        const file = new File(["dummy audio"], "test.mp3", { type: "audio/mpeg" });
+        const input = screen.getByTestId("file");
+
+        fireEvent.change(input, { target: { files: [file] } });
+
+        const button = screen.getByText("Upload");
+        fireEvent.click(button);
+
+        await waitFor(() => {
+            expect(mockFetchData).toHaveBeenCalled();
+        })
+    });
+});
