@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 
 // Upload audio feature to upload audio file to database
 const UploadAudio = ({ fetchData }) => {
-    // set use state to store the file
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState(null); // set use state to store the file
+    const [isUploading, setIsUploading] = useState(false); // State to track upload status
+    const fileInputRef = useRef(null); // Reference for file input
+    const [alert, setAlert] = useState(null); // Alert state
 
     // Set the file to selected file
     const handleFileChange = (e) => {
@@ -18,6 +20,8 @@ const UploadAudio = ({ fetchData }) => {
             console.log("No file selected");
             return;
         }
+
+        setIsUploading(true); // Start loading spinner
 
         // Create form data and append file
         const formData = new FormData();
@@ -33,9 +37,17 @@ const UploadAudio = ({ fetchData }) => {
         fetchData();
         setFile(null);
 
+        // Clear input field after uploading
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ""; 
+        }
+
         // Catch error if upload fails
         } catch (error) {
             console.error("Error uploading file:", error);
+            setAlert("An error occurred. Please try again.")
+        } finally {
+            setIsUploading(false); // Stop loading spinner
         }
     };
 
@@ -44,16 +56,29 @@ const UploadAudio = ({ fetchData }) => {
         <div className="mb-4">
             <h4>Upload Audio</h4>
             <div className="d-flex align-items-center">
-            <input
-                data-testid="file"
-                type="file"
-                accept="audio/*"
-                className="form-control mr-2"
-                onChange={handleFileChange}
-            />
-            <button className="btn btn-primary" onClick={uploadAudio} disabled={!file}>
-                Upload
-            </button>
+                <input
+                    ref={fileInputRef} 
+                    data-testid="file"
+                    type="file"
+                    accept="audio/*"
+                    className="form-control mr-2"
+                    onChange={handleFileChange}
+                    disabled={isUploading} 
+                />
+                <button 
+                    className="btn btn-primary d-flex align-items-center" 
+                    onClick={uploadAudio} 
+                    disabled={!file || isUploading}
+                >
+                    {isUploading ? (
+                        <>
+                            <span className="spinner-border spinner-border-sm me-2"></span>
+                            Uploading...
+                        </>
+                    ) : (
+                        "Upload"
+                    )}
+                </button>
             </div>
         </div>
     );
