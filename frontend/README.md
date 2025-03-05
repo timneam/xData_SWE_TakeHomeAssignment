@@ -136,6 +136,26 @@ Run the command below to run all the test cases
 npm test
 ```
 
+It will prompt the following
+```
+Watch Usage
+ › Press a to run all tests.
+ › Press f to run only failed tests.
+ › Press q to quit watch mode.
+ › Press p to filter by a filename regex pattern.
+ › Press t to filter by a test name regex pattern.
+ › Press Enter to trigger a test run.
+```
+
+Enter the letter ```"a"``` to run all test case files
+
+### Running jest directly
+Enter the following command into 
+the terminal in the root directory "frontend"
+```
+CI=true npm test
+```
+
 ### Clear Jests Cache
 Run the command below to clear Jest's cache
 ```
