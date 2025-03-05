@@ -38,7 +38,7 @@ function App() {
       <h1 className="text-center my-4">Audio Translator</h1>
       <UploadAudio fetchData={fetchData} />
       <Search setTranscriptions={setTranscriptions} fetchData={fetchData} />
-      <TranscriptionTable transcriptions={transcriptions} />
+      <TranscriptionTable transcriptions={transcriptions} fetchData={fetchData} />
     </div>
   );
 }

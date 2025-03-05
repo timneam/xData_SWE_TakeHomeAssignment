@@ -7,11 +7,16 @@ from starlette.middleware.cors import CORSMiddleware
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
 import librosa
 import io
+from datetime import datetime
+import pytz
 
 # Load Whisper model
 MODEL_NAME = "openai/whisper-tiny"
 processor = WhisperProcessor.from_pretrained(MODEL_NAME)
 model = WhisperForConditionalGeneration.from_pretrained(MODEL_NAME)
+
+# Define Singapore Timezone
+SGT = pytz.timezone("Asia/Singapore")
 
 # Database setup function
 # Create a connection to SQLite Database
@@ -66,16 +71,19 @@ async def transcribe(file: UploadFile = File(...)):
             predicted_ids = model.generate(input_features)
         transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)[0]
 
+        # Get current time in Singapore Time (SGT)
+        created_at = datetime.now(SGT).strftime("%Y-%m-%d %H:%M:%S")
+
         # Store in DB the file name and the transcription
         conn = sqlite3.connect("transcriptions.db")
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO transcriptions (file_name, transcribed_text) VALUES (?, ?)",
-                       (file.filename, transcription))
+        cursor.execute("INSERT INTO transcriptions (file_name, transcribed_text, created) VALUES (?, ?, ?)",
+                       (file.filename, transcription, created_at))
         conn.commit()
         conn.close()
 
         # Return file name and transcription
-        return {"file_name": file.filename, "transcription": transcription}
+        return {"file_name": file.filename, "transcription": transcription, "created": created_at}
 
     # Handle exceptions
     except Exception as e:
