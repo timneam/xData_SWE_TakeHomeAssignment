@@ -6,7 +6,6 @@ const UploadAudio = ({ fetchData }) => {
     const [file, setFile] = useState(null); // set use state to store the file
     const [isUploading, setIsUploading] = useState(false); // State to track upload status
     const fileInputRef = useRef(null); // Reference for file input
-    const [alert, setAlert] = useState(null); // Alert state
 
     // Set the file to selected file
     const handleFileChange = (e) => {
@@ -45,7 +44,6 @@ const UploadAudio = ({ fetchData }) => {
         // Catch error if upload fails
         } catch (error) {
             console.error("Error uploading file:", error);
-            setAlert("An error occurred. Please try again.")
         } finally {
             setIsUploading(false); // Stop loading spinner
         }
