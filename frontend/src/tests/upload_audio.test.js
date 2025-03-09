@@ -6,19 +6,29 @@ import MockAdapter from "axios-mock-adapter";
 describe("Upload Audio Component", () => {
     let mock;
 
+    // Before each test cases, mock an instance of axios
     beforeEach(() => {
         mock = new MockAdapter(axios);
     });
 
+    // Restore its original state after each test cases
     afterEach(() => {
         mock.restore();
     });
 
+    // Render the upload audio file component
+    // Should expect to get the upload audio text
     test("renders file input", () => {
         render(<UploadAudio fetchData={jest.fn()} />);
         expect(screen.getByText("Upload Audio")).toBeInTheDocument();
     });
 
+    // Mock the function to fetchData
+    // Render the Upload audio file component
+    // Mock the API endpoint for file upload
+    // Select the file and trigger a change event
+    // Click upload button
+    // Wait for API call and expect that the fetchData is called
     test("handles file upload", async () => {
         const mockFetchData = jest.fn();
         render(<UploadAudio fetchData={mockFetchData} />);

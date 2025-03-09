@@ -6,19 +6,27 @@ import MockAdapter from "axios-mock-adapter";
 describe("Search Component", () => {
     let mock;
 
+    // Before each test cases, create a mock instance for axios
     beforeEach(() => {
         mock = new MockAdapter(axios);
     });
 
+    // Restore axios back to its original state after each tests
     afterEach(() => {
         mock.restore();
     });
 
+    // Render the search component and then verify by expecting the search input field is present
     test("renders search input field", () => {
         render(<Search setTranscriptions={jest.fn()} fetchData={jest.fn()} />);
         expect(screen.getByPlaceholderText("Search for files")).toBeInTheDocument();
     });
 
+    // Create a mock function to handle transcription update
+    // Renger the search component
+    // Mock the search API endpoint
+    // Then enter something into the search component
+    // Then wait and expect that a transaction has been updated
     test("search triggers API request", async () => {
         const mockSetTranscriptions = jest.fn();
         render(<Search setTranscriptions={mockSetTranscriptions} fetchData={jest.fn()} />);

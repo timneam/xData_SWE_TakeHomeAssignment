@@ -54,11 +54,12 @@ const UploadAudio = ({ fetchData }) => {
         <div className="mb-4">
             <h4>Upload Audio</h4>
             <div className="d-flex align-items-center">
+                {/* only allow audio files using the accept parameter */}
                 <input
                     ref={fileInputRef} 
                     data-testid="file"
                     type="file"
-                    accept="audio/*"
+                    accept="audio/*" 
                     className="form-control mr-2"
                     onChange={handleFileChange}
                     disabled={isUploading} 

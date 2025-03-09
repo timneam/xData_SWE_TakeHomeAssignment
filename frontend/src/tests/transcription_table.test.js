@@ -1,12 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import TranscriptionTable from "../features/transcription_table";
 
+// Render the transcription table
+// Then expect to get a text called Transcriptions
 test("renders transcription table", () => {
     render(<TranscriptionTable transcriptions={[]} />);
     expect(screen.getByText("Transcriptions")).toBeInTheDocument();
-    });
+});
 
-    test("renders transcription data correctly", () => {
+// Mock the transcription data
+// Render the transcription table
+// Then it should expect the screen to get the name of the mocked transcripted data
+test("renders transcription data correctly", () => {
     const mockTranscriptions = [
         { file_name: "audio1.mp3", transcription: "Hello world", created: "2025-03-04" },
     ];

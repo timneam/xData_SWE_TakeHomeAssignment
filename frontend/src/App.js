@@ -46,17 +46,23 @@ function App() {
         <h1 className="text-center my-2">Audio Translator</h1>
         <UploadAudio fetchData={fetchData} />
         <Search setTranscriptions={setTranscriptions} fetchData={fetchData} />
-          {/* Show loading message until data is available */}
-          {loading ? (
-              <div>
-              <p>Loading transcriptions...</p>
-            </div>
-          ) : 
+        
+        {/* Show loading message until data is available */}
+        {loading ? (
+          <div>
+            <p>Loading transcriptions...</p>
+          </div>
+        ) : transcriptions.length === 0 ? ( 
+          // Show "No data available" if there are no transcriptions
+          <div>
+            <p>No data available</p>
+          </div>
+        ) : (
           <TranscriptionTable transcriptions={transcriptions} />
-        }    
+        )}
       </div>
     </div>
-  );
+  );  
 }
 
 export default App;
