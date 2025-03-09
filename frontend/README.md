@@ -128,7 +128,7 @@ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 ## Test suites
-In the root directory, run the below command
+In the root directory of `frontend`, run the below command
 
 ### Run tests
 Run the command below to run all the test cases
@@ -149,9 +149,11 @@ Watch Usage
 
 Enter the letter ```"a"``` to run all test case files
 
+Enter the letter ```"q"``` to exit the `npm test` mode
+
 ### Running jest directly
 Enter the following command into 
-the terminal in the root directory "frontend"
+the terminal in the root directory `frontend`
 ```
 CI=true npm test
 ```

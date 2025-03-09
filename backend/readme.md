@@ -94,7 +94,7 @@ http://localhost:5001/docs
 ```
 
 ## Run test cases
-navigate to the root directory of backend project and run the following command
+navigate to the root directory of `backend` project and run the following command
 ```commandline
 pytest test_main.py
 ```
